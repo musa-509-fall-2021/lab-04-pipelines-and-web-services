@@ -18,7 +18,7 @@ addresses_column_names = [
     'zip',
 ]
 addresses_df = pd.read_csv(..., names=addresses_column_names)
-addresses_df.to_sql('addresses', db)
+addresses_df.to_sql('addresses', db, index=False, if_exists='replace')
 
 geocoded_column_names = [
     'address_id',
@@ -31,4 +31,4 @@ geocoded_column_names = [
     'tiger_line_side',
 ]
 geocoded_df = pd.read_csv(..., names=geocoded_column_names)
-geocoded_df.to_sql('geocoded_address_results', db)
+geocoded_df.to_sql('geocoded_address_results', db, index=False, if_exists='replace')

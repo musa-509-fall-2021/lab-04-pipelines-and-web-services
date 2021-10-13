@@ -5,7 +5,8 @@ Take the files that we've created and load them both into the database. You
 should end up with two tables: addresses and geocoded_address_results
 */
 
-create table if not exists addresses (
+drop table if exists addresses;
+create table addresses (
     address_id     integer,
     street_address text,
     city           text,
@@ -15,7 +16,8 @@ create table if not exists addresses (
 
 copy ...;
 
-create table if not exists geocoded_address_results (
+drop table if exists geocoded_address_results;
+create table geocoded_address_results (
     address_id      integer,
     input_address   text,
     match_status    text,

@@ -24,7 +24,7 @@ Generally, the core steps of any data pipeline are:
 
 Sometimes you'll hear of **ETL** or **ELT**, implying that there's some correct order to these processes. In practice, there are often several iterations of each of these steps in a pipeline (James Densmore refers to a common pattern as "EtLT" in chapter 3 of the _Data Pipelines Pocket Reference_ available online at [O'Reilly for Higher Education](http://pwp.library.upenn.edu.proxy.library.upenn.edu/loggedin/pwp/pw-oreilly.html) through the UPenn Library).
 
-## Extracting data from a remote URL
+## I. Extracting data from a remote URL
 
 In an extract process there are two distinct steps:
 1. Download or export data from some remote service, then
@@ -51,13 +51,21 @@ with open(outfile_path, mode='wb') as outfile:
 >
 > We can open files in different "modes". Above, we opened our file for writing (`w`) in binary mode (`b`). Since `response.content` is simply a string of bytes (it could be a JSON string, an image, a shapefile, ...), opening our file for writing in binary mode is usually safest. See the [Python docs](https://docs.python.org/3/library/functions.html#open) for more info about file modes.
 
-**Complete the _pipeline_01_download_addresses.py_ script so that it downloads a CSV file from the URL https://storage.googleapis.com/mjumbewu_musa_509/lab04_pipelines_and_web_services/addresses.csv. You can run the command from your terminal with:**
+**Complete the _pipeline_01_download_addresses.py_ script so that it downloads data from the URL https://storage.googleapis.com/mjumbewu_musa_509/lab04_pipelines_and_web_services/get_latest_addresses and saves that data to a file. Inspecting the response content or headers may be helpful to understand the data first. You can use tools like `curl`, [Postman](https://www.postman.com/), or just Python. For example, the following Python snippet will give you the value of the `Content-Type` header:**
+
+```python
+import requests
+response = requests.get('https://storage.googleapis.com/mjumbewu_musa_509/lab04_pipelines_and_web_services/get_latest_addresses')
+response.headers['Content-Type']
+```
+
+**Once you have completed the Python script, you can run it from your terminal with:**
 
 ```bash
 poetry run python pipeline_01_download_addresses.py
 ```
 
-## Extracting data from an API endpoint
+## II. Extracting data from an API endpoint
 
 Using an API endpoint is _fundamentally_ the same as downloading a static file from a server. In both cases what happens is:
 
@@ -114,7 +122,7 @@ Note that the file is opened for reading in binary mode. Doing so is strongly re
 poetry run python pipeline_02_geocode_addresses.py
 ```
 
-## Loading data into the database
+## III. Loading data into the database
 
 We don't have to use a single language to do everything in our pipeline. That's one of the advantages of chunking up our pipeline into different steps. For example, we can extract our data with python, and then choose to load our data using Python or SQL, using some other tool to tie the parts of our pipeline together later.
 
@@ -139,7 +147,9 @@ df.to_sql('[table_name]', db)
 
 Alternatively, we could use SQL to load our data into the database using `create table` and `copy` commands.
 
-**Fill out either the _pipeline_03_insert_addresses.py_ or the _pipeline_03_insert_addresses.sql_ file to complete your pipeline. You can run the python file with the command:**
+**Fill out either the _pipeline_03_insert_addresses.py_ or the _pipeline_03_insert_addresses.sql_ file to complete your pipeline. In the Python script, use the Pandas [`to_sql`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_sql.html) documentation to make sure you can explain why I used each of the parameters that I did for that function.**
+
+**You can run the python file with the command:**
 
 ```bash
 poetry run python pipeline_03_insert_addresses.py
