@@ -114,7 +114,7 @@ with open('<Path to file>', mode='rb') as opened_file:
         })
 ```
 
-Note that the file is opened for reading in binary mode. Doing so is strongly recommended by the [Requests documentation](https://docs.python-requests.org/en/latest/user/quickstart/#post-a-multipart-encoded-file).
+Note that the file is opened for reading (`r`) in binary (`b`) mode. Doing so is strongly recommended by the [Requests documentation](https://docs.python-requests.org/en/latest/user/quickstart/#post-a-multipart-encoded-file).
 
 **Complete the _pipeline_02_geocode_addresses.py_ script so that it geocodes the addresses from the file downloaded in the first extract step. You can run your script with:**
 
@@ -124,12 +124,12 @@ poetry run python pipeline_02_geocode_addresses.py
 
 ## III. Loading data into the database
 
-We don't have to use a single language to do everything in our pipeline. That's one of the advantages of chunking up our pipeline into different steps. For example, we can extract our data with python, and then choose to load our data using Python or SQL, using some other tool to tie the parts of our pipeline together later.
+We don't have to use a single language to do everything in our pipeline. That's one of the advantages of chunking up our pipeline into different steps. For example, we can extract our data with python, and then choose to load our data using Python _or_ SQL, using some other tool to tie the parts of our pipeline together later.
 
 To load data into the database with Python we _could_:
-* Use the `create_engine` function to create a SQLAlcehmy database engine to connect to our database,
-* Use the `read_csv` function to load our data into a Pandas Dataframe, and
-* Use the `to_sql` function to write our dataframe to the database.
+* Use the `create_engine` function to create a SQLAlcehmy database engine to connect to our database, then
+* Use the `read_csv` function to load our data into a Pandas Dataframe, and finally
+* Use the `to_sql` function to write our dataframe to a database.
 
 For example:
 
@@ -141,8 +141,8 @@ db = sqa.create_engine('postgresql://[dbuser]:[dbpassword]@localhost:5432/[dbnam
 
 # If our CSV file doesn't have a header, we can explicitly provide one.
 column_names = ['field_name1', 'field_name2', 'field_name3']
-df = pd.read_csv('[file_path]', names=column_names)
-df.to_sql('[table_name]', db)
+df = pd.read_csv('[file path]', names=column_names)
+df.to_sql('[table name]', db)
 ```
 
 Alternatively, we could use SQL to load our data into the database using `create table` and `copy` commands.
