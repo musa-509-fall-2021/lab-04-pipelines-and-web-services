@@ -20,4 +20,26 @@ I encourage you to read it for details, but the gist is:
 Save the geocoded data to a new file.
 """
 
+import datetime as dt
 import requests
+
+print('Opening the addresses data...')
+infile_path = f'data/addresses_{dt.date.today()}.csv'
+with open(infile_path, mode='rb') as opened_file:
+    print('Geocoding the addresses data...')
+    response = requests.post(
+        'https://geocoding.geo.census.gov/geocoder/geographies/addressbatch',
+        data={
+            'benchmark': 'Public_AR_Current',
+            'vintage': 'Current_Current',
+        },
+        files={
+            'addressFile': opened_file,
+        })
+
+print('Saving geocoded data to a file...')
+outfile_path = f'data/geocoded_addresses_{dt.date.today()}.csv'
+with open(outfile_path, mode='wb') as outfile:
+    outfile.write(response.content)
+
+print('Done.')

@@ -5,10 +5,11 @@ Take the files that we've created and load them both into the database. You
 should end up with two tables: addresses and geocoded_address_results.
 """
 
+import datetime as dt
 import pandas as pd
 import sqlalchemy as sqa
 
-db = sqa.create_engine(...)
+db = sqa.create_engine('postgresql://postgres:postgres@localhost:5432/musa_509_2021_lab04')
 
 addresses_column_names = [
     'address_id',
@@ -17,7 +18,7 @@ addresses_column_names = [
     'state',
     'zip',
 ]
-addresses_df = pd.read_csv(..., names=addresses_column_names)
+addresses_df = pd.read_csv(f'data/addresses_{dt.date.today()}.csv', names=addresses_column_names)
 addresses_df.to_sql('addresses', db, index=False, if_exists='replace')
 
 geocoded_column_names = [
@@ -30,5 +31,5 @@ geocoded_column_names = [
     'tiger_line_id',
     'tiger_line_side',
 ]
-geocoded_df = pd.read_csv(..., names=geocoded_column_names)
+geocoded_df = pd.read_csv(f'data/geocoded_addresses_{dt.date.today()}.csv', names=geocoded_column_names)
 geocoded_df.to_sql('geocoded_address_results', db, index=False, if_exists='replace')
